@@ -40,3 +40,8 @@ input {
   border: none;
   border-radius: 3px;
 }
+
+.p-error {
+  color: red;
+  font-size: large;
+}

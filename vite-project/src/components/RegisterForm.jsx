@@ -1,8 +1,17 @@
 import React from "react";
 import { useFormik } from "formik";
+import { registerFromSchemas } from "../schemas/RegisterFormSchemas";
 
 function RegisterForm() {
-  const { values, handleChange, handleSubmit } = useFormik({
+  const submit = (values, action) => {
+    console.log(values);
+    console.log(action);
+    setTimeout(() => {
+      action.resetForm();
+    }, 2000);
+  };
+
+  const { values, errors, handleChange, handleSubmit } = useFormik({
     initialValues: {
       email: "",
       age: "",
@@ -10,11 +19,13 @@ function RegisterForm() {
       confirmPassword: "",
       term: "",
     },
+    validationSchema: registerFromSchemas,
+    onSubmit: submit,
   });
 
   return (
     <div>
-      <form>
+      <form onSubmit={handleSubmit}>
         <div className="form-div">
           <label>E-mail</label>
           <input
@@ -24,6 +35,7 @@ function RegisterForm() {
             value={values.email}
             onChange={handleChange}
           />
+          <p className="p-error">{errors.email && errors.email}</p>
         </div>
         <div className="form-div">
           <label>Age</label>
@@ -34,6 +46,7 @@ function RegisterForm() {
             value={values.age}
             onChange={handleChange}
           />
+          <p className="p-error">{errors.age && errors.age}</p>
         </div>
 
         <div className="form-div">
@@ -45,6 +58,7 @@ function RegisterForm() {
             value={values.password}
             onChange={handleChange}
           />
+          <p className="p-error">{errors.password && errors.password}</p>
         </div>
         <div className="form-div">
           <label>Repeat Password</label>
@@ -55,6 +69,9 @@ function RegisterForm() {
             value={values.confirmPassword}
             onChange={handleChange}
           />
+          <p className="p-error">
+            {errors.confirmPassword && errors.confirmPassword}
+          </p>
         </div>
         <div className="form-div">
           <div
@@ -74,9 +91,12 @@ function RegisterForm() {
             />
             <label>I accept the user agreement</label>
           </div>
+          <p className="p-error" style={{ textAlign: "center" }}>
+            {errors.term && errors.term}
+          </p>
         </div>
         <div className="form-div">
-          <button>Save</button>
+          <button type="submit">Save</button>
         </div>
       </form>
     </div>
